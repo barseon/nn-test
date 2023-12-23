@@ -26,7 +26,8 @@ Composer install & database migrations
 
 The Api will be available at the url:
 
-    http://localhost:8080/api/{userId}/sessions-history
+    http://localhost:8080/  - Home page with demo diagram using api
+	http://localhost:8080/api/{userId}/sessions-history
     http://localhost:8080/api/{userId}/latest-domain
 You can also use the Postman collection for tests *BackendChallenge.postman_collection.json*
 
