@@ -17,10 +17,10 @@ Rename .env.example to .env
 
 **Step 4**
 
-Start database migrations and composer install
+Composer install & database migrations
 
-    docker exec slim_php composer db-setup 
-    docker exec slim_php composer install 
+    docker exec slim_php composer install
+	docker exec slim_php composer db-setup  
 
 **Step 5**
 
