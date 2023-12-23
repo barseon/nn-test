@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "052c6708-45d4-4129-bb0a-641aa47232a9",
+		"name": "Backend Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Latest domain",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/1/latest-domain",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"1",
+						"latest-domain"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sessions history",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/2/sessions-history",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"2",
+						"sessions-history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User not found",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/2000/sessions-history",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"2000",
+						"sessions-history"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
