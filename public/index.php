@@ -25,10 +25,7 @@ $app = AppFactory::create();
 $responseFactory = $app->getResponseFactory();
 
 $app->get('/', function ($request, $response, $args) {
-    return $this->get('view')->render($response, 'main.twig', [
-        'title' => 'Hi Twig',
-        'message' => "Hi"
-    ]);
+    return $this->get('view')->render($response, 'main.twig');
 });
 
 $app->group('/api/{userId}', function ($group) {
