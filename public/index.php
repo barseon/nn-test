@@ -10,6 +10,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Factory\AppFactory;
+use Slim\Views\Twig;
+use Slim\Views\TwigMiddleware;
 
 require __DIR__ . '/../vendor/autoload.php';
 $container = require __DIR__ . '/../app/dependencies.php';
@@ -19,11 +21,14 @@ $dotenv->load();
 
 AppFactory::setContainer($container);
 $app = AppFactory::create();
+
 $responseFactory = $app->getResponseFactory();
 
-$app->get('/', function (RequestInterface $request, ResponseInterface $response, array $args) {
-    $response->getBody()->write('Use /api/{userId}/sessions-history or /api/{userId}/latest-domain');
-    return $response;
+$app->get('/', function ($request, $response, $args) {
+    return $this->get('view')->render($response, 'main.twig', [
+        'title' => 'Hi Twig',
+        'message' => "Hi"
+    ]);
 });
 
 $app->group('/api/{userId}', function ($group) {

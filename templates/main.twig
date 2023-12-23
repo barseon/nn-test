@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div>
+    <label for="userIdInput">User ID:</label>
+    <input type="number" id="userIdInput" placeholder="Enter user ID" required>
+    <button id="updateButton">Update</button>
+</div>
+
+<h2>Your progress</h2>
+<div style="width: 50%">
+    <canvas id="progressChart"></canvas>
+</div>
+<p id="recentlyTrained">Recently trained: <span id="latestDomainName"></span></p>
+
+<script>
+    let chartInstance = null;
+
+    async function renderProgressChart(userId) {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/${userId}/sessions-history`);
+
+            if (response.status === 404) {
+                throw new Error('User not found');
+            }
+
+            const data = response.data;
+
+            const labels = data.map(item => new Date(item.date * 1000).toLocaleDateString());
+            const scores = data.map(item => item.score);
+
+            if (chartInstance) {
+                chartInstance.data.labels = labels;
+                chartInstance.data.datasets[0].data = scores;
+                chartInstance.update();
+            } else {
+
+                const ctx = document.getElementById('progressChart').getContext('2d');
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Score',
+                            data: scores,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+        } catch (error) {
+            alert(error.response.data.error || error.message);
+            document.getElementById('userIdInput').value = ''; // Сброс формы
+        }
+    }
+
+    async function renderLatestDomain(userId) {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/${userId}/latest-domain`);
+
+            if (response.status === 404) {
+                throw new Error('User not found');
+            }
+
+            const latestDomain = response.data.name;
+            document.getElementById('latestDomainName').textContent = latestDomain;
+        } catch (error) {
+            alert(error.response.data.error || error.message);
+            document.getElementById('userIdInput').value = ''; // Сброс формы
+        }
+    }
+
+    document.getElementById('updateButton').addEventListener('click', async () => {
+        const userId = document.getElementById('userIdInput').value;
+        if (userId) {
+            await renderProgressChart(userId);
+            await renderLatestDomain(userId);
+        } else {
+            alert('Please enter a user ID.');
+        }
+    });
+
+    async function initializePage() {
+        const userId = document.getElementById('userIdInput').value || '2'; // Значение по умолчанию
+        await renderProgressChart(userId);
+        await renderLatestDomain(userId);
+    }
+
+    window.onload = initializePage;
+</script>
+</body>
+</html>
